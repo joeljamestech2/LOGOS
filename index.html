@@ -52,7 +52,7 @@
             position: absolute;
             top: 2rem;
             right: 3rem;
-            z-index: 10;
+            z-index: 20;
         }
 
         .time-badge {
@@ -82,6 +82,8 @@
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+            position: relative;
+            z-index: 10; /* Keeps text above the image */
         }
 
         .logo-area h1 {
@@ -110,6 +112,7 @@
             padding: 1rem;
             background: linear-gradient(to right, rgba(0,0,0,0.05), transparent);
             margin-top: 1rem;
+            backdrop-filter: blur(2px);
         }
 
         .info-box h3 {
@@ -145,7 +148,7 @@
         }
 
         .features li i {
-            color: #72cfa0; /* slightly darker green for visibility */
+            color: #72cfa0;
             font-size: 1.2rem;
             width: 20px;
             text-align: center;
@@ -156,20 +159,23 @@
             position: relative;
             display: flex;
             justify-content: center;
-            align-items: flex-end;
+            align-items: center;
+            z-index: 1; /* Pushes image behind text */
         }
 
         .character-img {
-            height: 110%;
+            width: 140%;
+            max-width: 650px;
             position: absolute;
-            bottom: -50px;
+            top: 45%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             z-index: 1;
-            /* Using mask-image to fade the bottom slightly, blending into UI */
-            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            /* Fades the hard square edges of the JPEG into the white background */
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, rgba(0,0,0,0.1) 70%, transparent 85%);
+            mask-image: radial-gradient(ellipse at center, black 40%, rgba(0,0,0,0.1) 70%, transparent 85%);
             pointer-events: none;
+            opacity: 0.95;
         }
 
         /* --- Right Column --- */
@@ -178,6 +184,8 @@
             flex-direction: column;
             align-items: flex-end;
             padding-top: 1rem;
+            position: relative;
+            z-index: 10; /* Keeps buttons above the image */
         }
 
         .menu-title {
@@ -192,6 +200,7 @@
             font-weight: 900;
             text-transform: uppercase;
             line-height: 1;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
         }
 
         .menu-title p {
@@ -212,7 +221,7 @@
 
         .command-btn {
             width: 100%;
-            background: var(--bg-color);
+            background: rgba(253, 253, 253, 0.9);
             border: 2px solid var(--accent-green);
             border-radius: 12px;
             padding: 12px 20px;
@@ -224,6 +233,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
             text-align: left;
+            backdrop-filter: blur(5px);
         }
 
         .command-btn:hover {
@@ -263,11 +273,11 @@
             transform: translateX(-50%);
             display: flex;
             gap: 1rem;
-            z-index: 10;
+            z-index: 20; /* Ensures buttons are fully clickable */
         }
 
         .social-btn {
-            background: var(--bg-color);
+            background: rgba(253, 253, 253, 0.95);
             border: 2px solid var(--accent-green);
             border-radius: 12px;
             padding: 10px 20px;
@@ -279,6 +289,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
+            backdrop-filter: blur(5px);
         }
 
         .social-btn:hover {
@@ -316,7 +327,7 @@
             font-weight: 700;
             color: var(--text-muted);
             letter-spacing: 1px;
-            z-index: 10;
+            z-index: 20;
         }
 
         .footer .dots {
@@ -366,7 +377,7 @@
             </div>
 
             <div class="center-col">
-                <img src="joel.jpeg" alt="Anime Character" class="character-img">
+                <img src="Img_2026_06_06_04_59_38.jpeg" alt="Anime Character" class="character-img">
             </div>
 
             <div class="right-col">
