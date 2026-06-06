@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOEL XMD Interface</title>
+    <title>Dynamic Bot Interface</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -103,6 +103,7 @@
             font-weight: 900;
             letter-spacing: 2px;
             line-height: 1;
+            text-transform: uppercase;
         }
 
         .logo-area .jp-text {
@@ -314,7 +315,7 @@
             color: var(--text-muted);
             letter-spacing: 1px;
             z-index: 20;
-            background: rgba(253,253,253,0.6); /* Slight background to ensure readability over the image bottom */
+            background: rgba(253,253,253,0.6);
             padding: 5px 0;
             backdrop-filter: blur(2px);
         }
@@ -327,6 +328,7 @@
 
         .footer span {
             color: var(--text-main);
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -335,8 +337,8 @@
     <div class="dashboard-container">
         <!-- Top Bar -->
         <div class="top-bar">
-            <div class="time-badge"><i class="fa-regular fa-clock"></i> 11:54 PM</div>
-            <div class="time-badge"><i class="fa-regular fa-calendar"></i> APR 3, 2025</div>
+            <div class="time-badge"><i class="fa-regular fa-clock"></i> <span id="dyn-time">11:54 PM</span></div>
+            <div class="time-badge"><i class="fa-regular fa-calendar"></i> <span id="dyn-date">APR 3, 2025</span></div>
         </div>
 
         <div class="main-content">
@@ -344,7 +346,7 @@
             <div class="left-col">
                 <div class="logo-area">
                     <i class="fa-solid fa-shield-halved" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
-                    <h1>JOEL XMD</h1>
+                    <h1 class="dyn-botname">JOEL XMD</h1>
                     <div class="jp-text">フロンティア・MD</div>
                     <p>YOUR WHATSAPP POWERHOUSE</p>
                 </div>
@@ -362,7 +364,7 @@
                 </ul>
 
                 <div class="logo-area" style="margin-top: auto; padding-bottom: 6rem;">
-                    <h2>JOEL XMD</h2>
+                    <h2 class="dyn-botname" style="font-size: 2rem;">JOEL XMD</h2>
                     <div class="jp-text" style="font-size: 0.8rem;">フロンティア・MD</div>
                 </div>
             </div>
@@ -415,35 +417,76 @@
             <div class="social-btn">
                 <i class="fa-brands fa-youtube"></i>
                 <h4>YOUTUBE</h4>
-                <p>/Frontier-MD</p>
+                <p id="dyn-ytname">/Frontier-MD</p>
             </div>
             <div class="social-btn">
                 <i class="fa-brands fa-telegram"></i>
                 <h4>TELEGRAM</h4>
-                <p>@FrontierMD_Chat</p>
+                <p id="dyn-telname">@FrontierMD_Chat</p>
             </div>
             <div class="social-btn">
                 <i class="fa-brands fa-discord"></i>
                 <h4>DISCORD</h4>
-                <p>.gg/frontier-md</p>
+                <p id="dyn-discname">.gg/frontier-md</p>
             </div>
             <div class="social-btn">
                 <i class="fa-brands fa-whatsapp"></i>
                 <h4>WHATSAPP</h4>
-                <p>Click to Chat</p>
+                <p id="dyn-watsap">Click to Chat</p>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
             <div class="dots">● ● ● ●</div>
-            <span>JOEL XMD</span>
+            <span class="dyn-botname">JOEL XMD</span>
             <span>•</span>
-            <span>POWERED BY ITX-JOEL</span>
+            <span>POWERED BY <span id="dyn-poweredby">ITX-JOEL</span></span>
             <span>•</span>
             <span>BUILT WITH PASSION, DESIGNED FOR DOMINANCE</span>
         </div>
     </div>
 
+    <!-- Script to Handle URL Parameters -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Helper function to update elements by ID or Class
+            const updateElement = (paramName, selector) => {
+                if (urlParams.has(paramName)) {
+                    const value = urlParams.get(paramName);
+                    // Decode URI component just in case
+                    const decodedValue = decodeURIComponent(value);
+                    
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(el => el.textContent = decodedValue);
+                }
+            };
+
+            // Update standard text fields
+            updateElement('botname', '.dyn-botname');
+            updateElement('poweredby', '#dyn-poweredby');
+            updateElement('ytname', '#dyn-ytname');
+            updateElement('telname', '#dyn-telname');
+            updateElement('discname', '#dyn-discname');
+            updateElement('watsap', '#dyn-watsap');
+
+            // Handle the specific date parameter (Format: 11:19PM,22MAY2026)
+            if (urlParams.has('date')) {
+                const dateParam = urlParams.get('date');
+                // Split by comma
+                const dateParts = dateParam.split(',');
+                
+                if (dateParts.length >= 2) {
+                    document.getElementById('dyn-time').textContent = dateParts[0].trim();
+                    document.getElementById('dyn-date').textContent = dateParts[1].trim();
+                } else {
+                    // Fallback if no comma is provided
+                    document.getElementById('dyn-date').textContent = dateParam;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
