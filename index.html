@@ -488,5 +488,50 @@
             }
         });
     </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Helper function to update text elements
+            const updateElement = (paramName, selector) => {
+                if (urlParams.has(paramName)) {
+                    const value = decodeURIComponent(urlParams.get(paramName));
+                    document.querySelectorAll(selector).forEach(el => el.textContent = value);
+                }
+            };
+
+            // Update text fields
+            updateElement('botname', '.dyn-botname');
+            updateElement('poweredby', '#dyn-poweredby');
+            updateElement('ytname', '#dyn-ytname');
+            updateElement('telname', '#dyn-telname');
+            updateElement('discname', '#dyn-discname');
+            updateElement('watsap', '#dyn-watsap');
+
+            // Handle Date/Time
+            if (urlParams.has('date')) {
+                const dateParam = urlParams.get('date');
+                const dateParts = dateParam.split(',');
+                if (dateParts.length >= 2) {
+                    document.getElementById('dyn-time').textContent = dateParts[0].trim();
+                    document.getElementById('dyn-date').textContent = dateParts[1].trim();
+                }
+            }
+
+            // NEW: Handle Background Image URL
+            if (urlParams.has('imgurl')) {
+                const imgUrl = decodeURIComponent(urlParams.get('imgurl'));
+                const container = document.querySelector('.dashboard-container');
+                container.style.backgroundImage = `linear-gradient(to right, 
+                    rgba(253, 253, 253, 0.98) 0%, 
+                    rgba(253, 253, 253, 0.90) 25%,
+                    rgba(253, 253, 253, 0.20) 50%, 
+                    rgba(253, 253, 253, 0.90) 75%,
+                    rgba(253, 253, 253, 0.98) 100%), 
+                    url('${imgUrl}')`;
+            }
+        });
+    </script>
+
 </body>
 </html>
