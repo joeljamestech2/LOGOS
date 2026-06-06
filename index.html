@@ -34,14 +34,25 @@
         .dashboard-container {
             width: 1280px;
             height: 720px;
-            background-color: var(--bg-color);
             position: relative;
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
             padding: 2rem 3rem;
-            background-image: radial-gradient(circle at center, #ffffff 0%, #f0f0f0 100%);
+            
+            /* Sets the image as background with a white gradient overlay for readability */
+            background: 
+                linear-gradient(to right, 
+                    rgba(253, 253, 253, 0.98) 0%, 
+                    rgba(253, 253, 253, 0.90) 25%,
+                    rgba(253, 253, 253, 0.20) 50%, 
+                    rgba(253, 253, 253, 0.90) 75%,
+                    rgba(253, 253, 253, 0.98) 100%), 
+                url('joel.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         /* --- Header / Top Bar --- */
@@ -56,7 +67,7 @@
         }
 
         .time-badge {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid #ccc;
             padding: 5px 15px;
             border-radius: 20px;
@@ -65,16 +76,18 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            backdrop-filter: blur(4px);
         }
 
         /* --- Layout Grid --- */
         .main-content {
-            display: grid;
-            grid-template-columns: 350px 1fr 350px;
+            display: flex;
+            justify-content: space-between;
             height: 100%;
             position: relative;
-            z-index: 2;
+            z-index: 10;
             margin-top: 2rem;
+            width: 100%;
         }
 
         /* --- Left Column --- */
@@ -82,8 +95,7 @@
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            position: relative;
-            z-index: 10; /* Keeps text above the image */
+            width: 350px;
         }
 
         .logo-area h1 {
@@ -112,7 +124,6 @@
             padding: 1rem;
             background: linear-gradient(to right, rgba(0,0,0,0.05), transparent);
             margin-top: 1rem;
-            backdrop-filter: blur(2px);
         }
 
         .info-box h3 {
@@ -154,38 +165,13 @@
             text-align: center;
         }
 
-        /* --- Center Column (Character) --- */
-        .center-col {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1; /* Pushes image behind text */
-        }
-
-        .character-img {
-            width: 140%;
-            max-width: 650px;
-            position: absolute;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            /* Fades the hard square edges of the JPEG into the white background */
-            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, rgba(0,0,0,0.1) 70%, transparent 85%);
-            mask-image: radial-gradient(ellipse at center, black 40%, rgba(0,0,0,0.1) 70%, transparent 85%);
-            pointer-events: none;
-            opacity: 0.95;
-        }
-
         /* --- Right Column --- */
         .right-col {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             padding-top: 1rem;
-            position: relative;
-            z-index: 10; /* Keeps buttons above the image */
+            width: 350px;
         }
 
         .menu-title {
@@ -221,7 +207,7 @@
 
         .command-btn {
             width: 100%;
-            background: rgba(253, 253, 253, 0.9);
+            background: rgba(253, 253, 253, 0.85);
             border: 2px solid var(--accent-green);
             border-radius: 12px;
             padding: 12px 20px;
@@ -239,7 +225,7 @@
         .command-btn:hover {
             background: var(--accent-green-light);
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(181, 228, 202, 0.3);
+            box-shadow: 0 6px 12px rgba(181, 228, 202, 0.4);
         }
 
         .command-icon {
@@ -273,11 +259,11 @@
             transform: translateX(-50%);
             display: flex;
             gap: 1rem;
-            z-index: 20; /* Ensures buttons are fully clickable */
+            z-index: 20;
         }
 
         .social-btn {
-            background: rgba(253, 253, 253, 0.95);
+            background: rgba(253, 253, 253, 0.90);
             border: 2px solid var(--accent-green);
             border-radius: 12px;
             padding: 10px 20px;
@@ -289,7 +275,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(4px);
         }
 
         .social-btn:hover {
@@ -328,6 +314,9 @@
             color: var(--text-muted);
             letter-spacing: 1px;
             z-index: 20;
+            background: rgba(253,253,253,0.6); /* Slight background to ensure readability over the image bottom */
+            padding: 5px 0;
+            backdrop-filter: blur(2px);
         }
 
         .footer .dots {
@@ -344,12 +333,14 @@
 <body>
 
     <div class="dashboard-container">
+        <!-- Top Bar -->
         <div class="top-bar">
             <div class="time-badge"><i class="fa-regular fa-clock"></i> 11:54 PM</div>
             <div class="time-badge"><i class="fa-regular fa-calendar"></i> APR 3, 2025</div>
         </div>
 
         <div class="main-content">
+            <!-- Left Column -->
             <div class="left-col">
                 <div class="logo-area">
                     <i class="fa-solid fa-shield-halved" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
@@ -376,10 +367,7 @@
                 </div>
             </div>
 
-            <div class="center-col">
-                <img src="joel.jpeg" alt="Anime Character" class="character-img">
-            </div>
-
+            <!-- Right Column -->
             <div class="right-col">
                 <div class="menu-title">
                     <h2>MAIN MENU</h2>
@@ -422,6 +410,7 @@
             </div>
         </div>
 
+        <!-- Bottom Row (Socials) -->
         <div class="bottom-row">
             <div class="social-btn">
                 <i class="fa-brands fa-youtube"></i>
@@ -445,6 +434,7 @@
             </div>
         </div>
 
+        <!-- Footer -->
         <div class="footer">
             <div class="dots">● ● ● ●</div>
             <span>JOEL XMD</span>
