@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOEL XMD Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #fdfdfd;
+            --text-main: #111111;
+            --accent-green: #b5e4ca;
+            --accent-green-light: #eaf8f1;
+            --accent-pink: #f49ac2;
+            --text-muted: #555555;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #e0e5e2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        .dashboard-container {
+            width: 1280px;
+            height: 720px;
+            background-color: var(--bg-color);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 3rem;
+            background-image: radial-gradient(circle at center, #ffffff 0%, #f0f0f0 100%);
+        }
+
+        /* --- Header / Top Bar --- */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            z-index: 10;
+        }
+
+        .time-badge {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Layout Grid --- */
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr 350px;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+            margin-top: 2rem;
+        }
+
+        /* --- Left Column --- */
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .logo-area h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .logo-area .jp-text {
+            font-size: 1rem;
+            letter-spacing: 5px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .logo-area p {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .info-box {
+            border-left: 4px solid var(--text-main);
+            padding: 1rem;
+            background: linear-gradient(to right, rgba(0,0,0,0.05), transparent);
+            margin-top: 1rem;
+        }
+
+        .info-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box h3 i {
+            font-size: 0.8rem;
+        }
+
+        .info-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .features {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .features li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .features li i {
+            color: #72cfa0; /* slightly darker green for visibility */
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- Center Column (Character) --- */
+        .center-col {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .character-img {
+            height: 110%;
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            /* Using mask-image to fade the bottom slightly, blending into UI */
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            pointer-events: none;
+        }
+
+        /* --- Right Column --- */
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding-top: 1rem;
+        }
+
+        .menu-title {
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-title h2 {
+            color: var(--accent-pink);
+            font-size: 3rem;
+            font-style: italic;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .menu-title p {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .menu-title p::before, .menu-title p::after {
+            content: "◆";
+            font-size: 0.6rem;
+        }
+
+        .command-btn {
+            width: 100%;
+            background: var(--bg-color);
+            border: 2px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            text-align: left;
+        }
+
+        .command-btn:hover {
+            background: var(--accent-green-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(181, 228, 202, 0.3);
+        }
+
+        .command-icon {
+            background: var(--accent-green);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .command-text h4 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .command-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Bottom Row (Socials) --- */
+        .bottom-row {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 10;
+        }
+
+        .social-btn {
+            background: var(--bg-color);
+            border: 2px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 10px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 130px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .social-btn:hover {
+            background: var(--accent-green-light);
+            transform: translateY(-2px);
+        }
+
+        .social-btn i {
+            color: #72cfa0;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .social-btn h4 {
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .social-btn p {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        .footer .dots {
+            letter-spacing: 4px;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .footer span {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="top-bar">
+            <div class="time-badge"><i class="fa-regular fa-clock"></i> 11:54 PM</div>
+            <div class="time-badge"><i class="fa-regular fa-calendar"></i> APR 3, 2025</div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-col">
+                <div class="logo-area">
+                    <i class="fa-solid fa-shield-halved" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+                    <h1>JOEL XMD</h1>
+                    <div class="jp-text">フロンティア・MD</div>
+                    <p>YOUR WHATSAPP POWERHOUSE</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>◆ SMART. FAST. RELENTLESS.</h3>
+                    <p>A powerful multi-purpose WhatsApp bot built to handle everything with style.<br>Made for those who demand the best.</p>
+                </div>
+
+                <ul class="features">
+                    <li><i class="fa-solid fa-bolt"></i> FAST RESPONSES</li>
+                    <li><i class="fa-solid fa-gear"></i> POWERFUL COMMANDS</li>
+                    <li><i class="fa-solid fa-shield-check"></i> SECURE & STABLE</li>
+                    <li><i class="fa-solid fa-star"></i> BUILT FOR THE FUTURE</li>
+                </ul>
+
+                <div class="logo-area" style="margin-top: auto; padding-bottom: 6rem;">
+                    <h2>JOEL XMD</h2>
+                    <div class="jp-text" style="font-size: 0.8rem;">フロンティア・MD</div>
+                </div>
+            </div>
+
+            <div class="center-col">
+                <img src="joel.jpeg" alt="Anime Character" class="character-img">
+            </div>
+
+            <div class="right-col">
+                <div class="menu-title">
+                    <h2>MAIN MENU</h2>
+                    <p>CHOOSE A COMMAND</p>
+                </div>
+
+                <div style="width: 100%;">
+                    <button class="command-btn">
+                        <div class="command-icon"><i class="fa-solid fa-cat"></i></div>
+                        <div class="command-text">
+                            <h4>NEKO</h4>
+                            <p>Get random cute neko images</p>
+                        </div>
+                    </button>
+
+                    <button class="command-btn">
+                        <div class="command-icon"><i class="fa-solid fa-tv"></i></div>
+                        <div class="command-text">
+                            <h4>ANIME</h4>
+                            <p>Search & get anime info</p>
+                        </div>
+                    </button>
+
+                    <button class="command-btn">
+                        <div class="command-icon"><i class="fa-brands fa-android"></i></div>
+                        <div class="command-text">
+                            <h4>APK</h4>
+                            <p>Download Android APKs</p>
+                        </div>
+                    </button>
+
+                    <button class="command-btn">
+                        <div class="command-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                        <div class="command-text">
+                            <h4>TOOLS</h4>
+                            <p>Useful tools & utilities</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-row">
+            <div class="social-btn">
+                <i class="fa-brands fa-youtube"></i>
+                <h4>YOUTUBE</h4>
+                <p>/Frontier-MD</p>
+            </div>
+            <div class="social-btn">
+                <i class="fa-brands fa-telegram"></i>
+                <h4>TELEGRAM</h4>
+                <p>@FrontierMD_Chat</p>
+            </div>
+            <div class="social-btn">
+                <i class="fa-brands fa-discord"></i>
+                <h4>DISCORD</h4>
+                <p>.gg/frontier-md</p>
+            </div>
+            <div class="social-btn">
+                <i class="fa-brands fa-whatsapp"></i>
+                <h4>WHATSAPP</h4>
+                <p>Click to Chat</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="dots">● ● ● ●</div>
+            <span>JOEL XMD</span>
+            <span>•</span>
+            <span>POWERED BY ITX-JOEL</span>
+            <span>•</span>
+            <span>BUILT WITH PASSION, DESIGNED FOR DOMINANCE</span>
+        </div>
+    </div>
+
+</body>
+</html>
